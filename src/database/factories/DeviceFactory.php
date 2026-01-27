@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Network;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -34,6 +35,7 @@ class DeviceFactory extends Factory
 
             'device_type' => fake()->randomElement([
                 'router',
+                'switch',
                 'server',
                 'firewall',
                 'other',

@@ -16,9 +16,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Network::factory(10)->create();
-
-        // Device::factory(4)->create();
+        Device::factory(4)->create();
+        
+        // Network::factory(10)->create();
 
         // Network::factory()->create([
         //     'id' => '01KFYTVZYD2TCY05S7MCTQG52F',
