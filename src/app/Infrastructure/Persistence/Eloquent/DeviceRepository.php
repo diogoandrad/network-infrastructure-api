@@ -10,20 +10,16 @@ class DeviceRepository implements DeviceRepositoryInterface
     public function getAll(): array
     {
         return Device::query()
-            ->select([
-                'id',
-                'name',
-                'description',
-                'ip_addresses',
-                'mac_address',
-                'device_type',
-                'os',
-                'status',
-                'created_at',
-                'updated_at',
-            ])
             ->orderBy('created_at')
             ->get()
             ->toArray();
+    }
+
+    public function getById(string $id): ?array
+    {
+        return Device::query()
+            ->where('id', $id)
+            ->first()
+            ?->toArray();
     }
 }

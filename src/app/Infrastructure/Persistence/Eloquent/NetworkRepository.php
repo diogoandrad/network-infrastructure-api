@@ -10,18 +10,16 @@ class NetworkRepository implements NetworkRepositoryInterface
     public function getAll(): array
     {
         return Network::query()
-            ->select([
-                'id',
-                'name',
-                'description',
-                'cidr',
-                'location',
-                'status',
-                'created_at',
-                'updated_at',
-            ])
             ->orderBy('created_at')
             ->get()
             ->toArray();
+    }
+
+    public function getById(string $id): ?array
+    {
+        return Network::query()
+            ->where('id', $id)
+            ->first()
+            ?->toArray();
     }
 }

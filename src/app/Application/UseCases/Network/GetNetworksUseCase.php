@@ -4,7 +4,7 @@ namespace App\Application\UseCases\Network;
 
 use App\Domain\Repositories\NetworkRepositoryInterface;
 
-class ListNetworksUseCase
+class GetNetworksUseCase
 {
     public function __construct(
         private NetworkRepositoryInterface $repository
