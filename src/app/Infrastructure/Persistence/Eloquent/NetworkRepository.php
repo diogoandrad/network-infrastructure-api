@@ -29,4 +29,24 @@ class NetworkRepository implements NetworkRepositoryInterface
 
         return $network->toArray();
     }
+
+    public function update(string $id, array $data): ?array
+    {
+        $network = Network::find($id);
+
+        if (!$network) return null;
+
+        $network->update($data);
+
+        return $network->toArray();
+    }
+
+    public function delete(string $id): bool
+    {
+        $network = Network::find($id);
+
+        if (!$network) return false;
+
+        return (bool) $network->delete();
+    }
 }
