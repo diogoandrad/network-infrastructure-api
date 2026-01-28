@@ -12,6 +12,7 @@ use App\Http\Requests\Device\StoreDeviceRequest;
 use App\Http\Requests\Device\UpdateDeviceRequest;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\EnrichDeviceWithShodanJob;
 use Illuminate\Http\JsonResponse;
 
 class DeviceController extends Controller
@@ -36,6 +37,8 @@ class DeviceController extends Controller
     public function store(StoreDeviceRequest $request, CreateDeviceUseCase $useCase): JsonResponse
     {
         $device = $useCase->execute($request->validated());
+
+        EnrichDeviceWithShodanJob::dispatch($device['id']);
 
         return response()->json($device, 201);
     }

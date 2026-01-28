@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'shodan' => [
+        'key' => env('SHODAN_API_KEY'),
+        'base_url' => 'https://api.shodan.io',
+    ],
+
 ];
