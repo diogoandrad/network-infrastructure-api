@@ -22,4 +22,11 @@ class NetworkRepository implements NetworkRepositoryInterface
             ->first()
             ?->toArray();
     }
+
+    public function create(array $data): array
+    {
+        $network = Network::create($data);
+
+        return $network->toArray();
+    }
 }
