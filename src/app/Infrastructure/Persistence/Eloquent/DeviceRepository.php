@@ -25,28 +25,28 @@ class DeviceRepository implements DeviceRepositoryInterface
 
     public function create(array $data): array
     {
-        $network = Device::create($data);
+        $device = Device::create($data);
 
-        return $network->toArray();
+        return $device->toArray();
     }
 
     public function update(string $id, array $data): ?array
     {
-        $network = Device::find($id);
+        $device = Device::find($id);
 
-        if (!$network) return null;
+        if (!$device) return null;
 
-        $network->update($data);
+        $device->update($data);
 
-        return $network->toArray();
+        return $device->toArray();
     }
 
     public function delete(string $id): bool
     {
-        $network = Device::find($id);
+        $device = Device::find($id);
 
-        if (!$network) return false;
+        if (!$device) return false;
 
-        return (bool) $network->delete();
+        return (bool) $device->delete();
     }
 }

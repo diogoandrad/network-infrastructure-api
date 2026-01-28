@@ -25,10 +25,12 @@ class Device extends Model
         'device_type',
         'os',
         'status',
+        'shodan_data',
     ];
 
     protected $casts = [
         'ip_addresses' => 'array',
+        'shodan_data' => 'array',
     ];
 
     public function network()

@@ -39,6 +39,8 @@ return new class extends Migration
 
             $table->timestamps();
 
+            $table->json('shodan_data')->nullable();
+
             $table->index('device_type');
             $table->index('status');
         });
