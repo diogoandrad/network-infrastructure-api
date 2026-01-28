@@ -15,8 +15,18 @@ use App\Http\Controllers\Controller;
 use App\Jobs\EnrichDeviceWithShodanJob;
 use Illuminate\Http\JsonResponse;
 
+use OpenApi\Attributes as OA;
+
 class DeviceController extends Controller
 {
+    #[OA\Get(
+        path: '/api/devices',
+        tags: ['Devices'],
+        summary: 'List devices',
+        responses: [
+            new OA\Response(response: 200, description: 'OK')
+        ]
+    )]
     public function index(GetDevicesUseCase $useCase): JsonResponse
     {
         $devices = $useCase->execute();
@@ -24,18 +34,46 @@ class DeviceController extends Controller
         return response()->json($devices);
     }
 
+    #[OA\Get(
+        path: '/api/devices/{id}',
+        tags: ['Devices'],
+        summary: 'Get device by id',
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            )
+        ],
+        responses: [
+            new OA\Response(response: 200, description: 'OK'),
+            new OA\Response(response: 404, description: 'Device not found')
+        ]
+    )]
     public function show(string $id, GetDeviceByIdUseCase $useCase): JsonResponse
     {
         $device = $useCase->execute($id);
 
-        if (!$device)
+        if (!$device) {
             return response()->json(['message' => 'Device not found'], 404);
+        }
 
         return response()->json($device);
     }
 
-    public function store(StoreDeviceRequest $request, CreateDeviceUseCase $useCase): JsonResponse
-    {
+    #[OA\Post(
+        path: '/api/devices',
+        tags: ['Devices'],
+        summary: 'Create device',
+        responses: [
+            new OA\Response(response: 201, description: 'Created')
+        ]
+    )]
+    public function store(
+        StoreDeviceRequest $request,
+        CreateDeviceUseCase $useCase
+    ): JsonResponse {
         $device = $useCase->execute($request->validated());
 
         EnrichDeviceWithShodanJob::dispatch($device['id']);
@@ -43,22 +81,61 @@ class DeviceController extends Controller
         return response()->json($device, 201);
     }
 
-    public function update(string $id, UpdateDeviceRequest $request, UpdateDeviceUseCase $useCase): JsonResponse
-    {
+    #[OA\Put(
+        path: '/api/devices/{id}',
+        tags: ['Devices'],
+        summary: 'Update device',
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            )
+        ],
+        responses: [
+            new OA\Response(response: 200, description: 'Updated'),
+            new OA\Response(response: 404, description: 'Device not found')
+        ]
+    )]
+    public function update(
+        string $id,
+        UpdateDeviceRequest $request,
+        UpdateDeviceUseCase $useCase
+    ): JsonResponse {
         $device = $useCase->execute($id, $request->validated());
 
-        if (!$device)
+        if (!$device) {
             return response()->json(['message' => 'Device not found'], 404);
+        }
 
         return response()->json($device);
     }
 
+    #[OA\Delete(
+        path: '/api/devices/{id}',
+        tags: ['Devices'],
+        summary: 'Delete device',
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            )
+        ],
+        responses: [
+            new OA\Response(response: 204, description: 'No content'),
+            new OA\Response(response: 404, description: 'Device not found')
+        ]
+    )]
     public function destroy(string $id, DeleteDeviceUseCase $useCase): JsonResponse
     {
         $deleted = $useCase->execute($id);
 
-        if (!$deleted)
+        if (!$deleted) {
             return response()->json(['message' => 'Device not found'], 404);
+        }
 
         return response()->json(null, 204);
     }
