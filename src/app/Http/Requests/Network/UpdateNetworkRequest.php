@@ -17,7 +17,7 @@ class UpdateNetworkRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'cidr' => ['required', 'string',
+            'cidr' => ['required', 'string', 'max:43',
                 Rule::unique('networks', 'cidr')->ignore($this->route('id')),
             ],
             'location' => ['nullable', 'string'],
