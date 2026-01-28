@@ -133,6 +133,27 @@ http://127.0.0.1:8000
 
 ---
 
+## 🔌 API Design and Documentation
+
+The API follows RESTful design principles with clear resource-oriented endpoints, consistent HTTP verbs, and predictable response structures.
+
+Interactive API documentation is available directly in the browser:
+
+```
+/api/documentation
+```
+
+This documentation provides:
+
+* A complete list of available endpoints
+* Request and response examples
+* Validation rules and expected payloads
+* HTTP status codes and error formats
+
+The documentation is intended to simplify exploration, testing, and integration for both frontend and backend consumers.
+
+---
+
 ## 🔌 API Endpoints (Summary)
 
 ### Networks
