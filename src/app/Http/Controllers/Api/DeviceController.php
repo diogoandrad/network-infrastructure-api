@@ -24,7 +24,16 @@ class DeviceController extends Controller
         tags: ['Devices'],
         summary: 'List devices',
         responses: [
-            new OA\Response(response: 200, description: 'OK')
+            new OA\Response(
+                response: 200,
+                description: 'OK',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: '#/components/schemas/Device'
+                    )
+                )
+            )
         ]
     )]
     public function index(GetDevicesUseCase $useCase): JsonResponse
@@ -47,8 +56,14 @@ class DeviceController extends Controller
             )
         ],
         responses: [
-            new OA\Response(response: 200, description: 'OK'),
-            new OA\Response(response: 404, description: 'Device not found')
+            new OA\Response(
+                response: 200,
+                description: 'OK',
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/Device'
+                )
+            ),
+            new OA\Response(response: 404, description: 'Not found')
         ]
     )]
     public function show(string $id, GetDeviceByIdUseCase $useCase): JsonResponse
@@ -66,14 +81,25 @@ class DeviceController extends Controller
         path: '/api/devices',
         tags: ['Devices'],
         summary: 'Create device',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                ref: '#/components/schemas/CreateDeviceRequest'
+            )
+        ),
         responses: [
-            new OA\Response(response: 201, description: 'Created')
+            new OA\Response(
+                response: 201,
+                description: 'OK',
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/Device'
+                )
+            ),
+            new OA\Response(response: 422, description: 'Validation error')
         ]
     )]
-    public function store(
-        StoreDeviceRequest $request,
-        CreateDeviceUseCase $useCase
-    ): JsonResponse {
+    public function store(StoreDeviceRequest $request, CreateDeviceUseCase $useCase): JsonResponse
+    {
         $device = $useCase->execute($request->validated());
 
         EnrichDeviceWithShodanJob::dispatch($device['id']);
@@ -93,9 +119,22 @@ class DeviceController extends Controller
                 schema: new OA\Schema(type: 'string')
             )
         ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                ref: '#/components/schemas/UpdateDeviceRequest'
+            )
+        ),
         responses: [
-            new OA\Response(response: 200, description: 'Updated'),
-            new OA\Response(response: 404, description: 'Device not found')
+            new OA\Response(
+                response: 200,
+                description: 'OK',
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/Device'
+                )
+            ),
+            new OA\Response(response: 422, description: 'Validation error'),
+            new OA\Response(response: 404, description: 'Not found')
         ]
     )]
     public function update(
@@ -126,7 +165,7 @@ class DeviceController extends Controller
         ],
         responses: [
             new OA\Response(response: 204, description: 'No content'),
-            new OA\Response(response: 404, description: 'Device not found')
+            new OA\Response(response: 404, description: 'Not found')
         ]
     )]
     public function destroy(string $id, DeleteDeviceUseCase $useCase): JsonResponse

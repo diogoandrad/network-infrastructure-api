@@ -15,7 +15,17 @@
                 "operationId": "a75d9e7e123258c1e54a0c79e9e2caff",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Device"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -25,9 +35,29 @@
                 ],
                 "summary": "Create device",
                 "operationId": "6274e6101f84d18fb00e2cda281342f4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateDeviceRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
-                        "description": "Created"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Device"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
                     }
                 }
             }
@@ -51,10 +81,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Device"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Device not found"
+                        "description": "Not found"
                     }
                 }
             },
@@ -74,12 +111,32 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateDeviceRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Updated"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Device"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
                     },
                     "404": {
-                        "description": "Device not found"
+                        "description": "Not found"
                     }
                 }
             },
@@ -104,7 +161,7 @@
                         "description": "No content"
                     },
                     "404": {
-                        "description": "Device not found"
+                        "description": "Not found"
                     }
                 }
             }
@@ -118,7 +175,17 @@
                 "operationId": "393b80808350f5fef956de744bedc779",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Network"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -128,9 +195,29 @@
                 ],
                 "summary": "Create network",
                 "operationId": "76eb3fb66f2e71c3c1d8c8b248ec6991",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateNetworkRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
-                        "description": "Created"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Network"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
                     }
                 }
             }
@@ -154,7 +241,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Network"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Not found"
@@ -167,9 +261,39 @@
                 ],
                 "summary": "Update network",
                 "operationId": "7a730a5fd53f2d5d67a0c8cd11142626",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateNetworkRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Updated"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Network"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
                     },
                     "404": {
                         "description": "Not found"
@@ -182,6 +306,16 @@
                 ],
                 "summary": "Delete network",
                 "operationId": "ca4e5998233ff1c0063737a8fd965a1f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "204": {
                         "description": "No content"
@@ -190,6 +324,238 @@
                         "description": "Not found"
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Device": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "01KG1RSX20ZBFM6DQF4A9G8AWU"
+                    },
+                    "network_id": {
+                        "type": "string",
+                        "example": "01KG1RSX20ZBFM6DQF4A9G6OSM"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Office Device"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Main office device"
+                    },
+                    "ip_addresses": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "ipv4"
+                        },
+                        "example": [
+                            "218.225.86.190"
+                        ]
+                    },
+                    "mac_address": {
+                        "type": "string",
+                        "example": "D9:FC:1C:07:B8:E8"
+                    },
+                    "device_type": {
+                        "type": "string",
+                        "example": "server"
+                    },
+                    "os": {
+                        "type": "string",
+                        "example": "macOS"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "online"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "2026-01-28T07:41:35.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "example": "2026-01-28T08:42:36.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateDeviceRequest": {
+                "properties": {
+                    "network_id": {
+                        "type": "string",
+                        "example": "01KG1RSX20ZBFM6DQF4A9G6OSM"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Office Device"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Main office device"
+                    },
+                    "ip_addresses": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "ipv4"
+                        },
+                        "example": [
+                            "218.225.86.190"
+                        ]
+                    },
+                    "mac_address": {
+                        "type": "string",
+                        "example": "D9:FC:1C:07:B8:E8"
+                    },
+                    "device_type": {
+                        "type": "string",
+                        "example": "server"
+                    },
+                    "os": {
+                        "type": "string",
+                        "example": "macOS"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "online"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateDeviceRequest": {
+                "properties": {
+                    "network_id": {
+                        "type": "string",
+                        "example": "01KG1RSX20ZBFM6DQF4A9G6OSM"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Office Device"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Main office device"
+                    },
+                    "ip_addresses": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "ipv4"
+                        },
+                        "example": [
+                            "218.225.86.190"
+                        ]
+                    },
+                    "mac_address": {
+                        "type": "string",
+                        "example": "D9:FC:1C:07:B8:E8"
+                    },
+                    "device_type": {
+                        "type": "string",
+                        "example": "server"
+                    },
+                    "os": {
+                        "type": "string",
+                        "example": "macOS"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "online"
+                    }
+                },
+                "type": "object"
+            },
+            "Network": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "01KG1RSX20ZBFM6DQF4A9G8AEZ"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Office Network"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Main office network"
+                    },
+                    "cidr": {
+                        "type": "string",
+                        "example": "198.219.150.192/22"
+                    },
+                    "location": {
+                        "type": "string",
+                        "example": "Toronto"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "2026-01-28T07:41:35.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "example": "2026-01-28T08:42:36.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "CreateNetworkRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Office Network"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Main office network"
+                    },
+                    "cidr": {
+                        "type": "string",
+                        "example": "198.219.150.192/22"
+                    },
+                    "location": {
+                        "type": "string",
+                        "example": "Toronto"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "active"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateNetworkRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Office Network"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Main office network"
+                    },
+                    "cidr": {
+                        "type": "string",
+                        "example": "198.219.150.192/22"
+                    },
+                    "location": {
+                        "type": "string",
+                        "example": "Toronto"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "active"
+                    }
+                },
+                "type": "object"
             }
         }
     },
