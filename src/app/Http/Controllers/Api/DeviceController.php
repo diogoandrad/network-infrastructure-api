@@ -48,7 +48,7 @@ class DeviceController extends Controller
         ],
         responses: [
             new OA\Response(response: 200, description: 'OK'),
-            new OA\Response(response: 404, description: 'Device not found')
+            new OA\Response(response: 404, description: 'Not found')
         ]
     )]
     public function show(string $id, GetDeviceByIdUseCase $useCase): JsonResponse
@@ -70,10 +70,8 @@ class DeviceController extends Controller
             new OA\Response(response: 201, description: 'Created')
         ]
     )]
-    public function store(
-        StoreDeviceRequest $request,
-        CreateDeviceUseCase $useCase
-    ): JsonResponse {
+    public function store(StoreDeviceRequest $request, CreateDeviceUseCase $useCase): JsonResponse
+    {
         $device = $useCase->execute($request->validated());
 
         EnrichDeviceWithShodanJob::dispatch($device['id']);
@@ -95,7 +93,7 @@ class DeviceController extends Controller
         ],
         responses: [
             new OA\Response(response: 200, description: 'Updated'),
-            new OA\Response(response: 404, description: 'Device not found')
+            new OA\Response(response: 404, description: 'Not found')
         ]
     )]
     public function update(
@@ -126,7 +124,7 @@ class DeviceController extends Controller
         ],
         responses: [
             new OA\Response(response: 204, description: 'No content'),
-            new OA\Response(response: 404, description: 'Device not found')
+            new OA\Response(response: 404, description: 'Not found')
         ]
     )]
     public function destroy(string $id, DeleteDeviceUseCase $useCase): JsonResponse

@@ -28,7 +28,9 @@ class NetworkController extends Controller
     )]
     public function index(GetNetworksUseCase $useCase): JsonResponse
     {
-        return response()->json($useCase->execute());
+        $networks = $useCase->execute();
+
+        return response()->json($networks);
     }
 
     #[OA\Get(
@@ -69,16 +71,23 @@ class NetworkController extends Controller
     )]
     public function store(StoreNetworkRequest $request, CreateNetworkUseCase $useCase): JsonResponse
     {
-        return response()->json(
-            $useCase->execute($request->validated()),
-            201
-        );
+        $network = $useCase->execute($request->validated());
+
+        return response()->json($network, 201);
     }
 
     #[OA\Put(
         path: '/api/networks/{id}',
         tags: ['Networks'],
         summary: 'Update network',
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            )
+        ],
         responses: [
             new OA\Response(response: 200, description: 'Updated'),
             new OA\Response(response: 404, description: 'Not found')
@@ -102,6 +111,14 @@ class NetworkController extends Controller
         path: '/api/networks/{id}',
         tags: ['Networks'],
         summary: 'Delete network',
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            )
+        ],
         responses: [
             new OA\Response(response: 204, description: 'No content'),
             new OA\Response(response: 404, description: 'Not found')
