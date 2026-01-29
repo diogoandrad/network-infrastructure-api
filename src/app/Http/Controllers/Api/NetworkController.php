@@ -23,7 +23,16 @@ class NetworkController extends Controller
         tags: ['Networks'],
         summary: 'List networks',
         responses: [
-            new OA\Response(response: 200, description: 'OK')
+            new OA\Response(
+                response: 200,
+                description: 'OK',
+                content: new OA\JsonContent(
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: '#/components/schemas/Network'
+                    )
+                )
+            )
         ]
     )]
     public function index(GetNetworksUseCase $useCase): JsonResponse
@@ -46,7 +55,13 @@ class NetworkController extends Controller
             )
         ],
         responses: [
-            new OA\Response(response: 200, description: 'OK'),
+            new OA\Response(
+                response: 200,
+                description: 'OK',
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/Network'
+                )
+            ),
             new OA\Response(response: 404, description: 'Not found')
         ]
     )]
@@ -65,8 +80,21 @@ class NetworkController extends Controller
         path: '/api/networks',
         tags: ['Networks'],
         summary: 'Create network',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                ref: '#/components/schemas/CreateNetworkRequest'
+            )
+        ),
         responses: [
-            new OA\Response(response: 201, description: 'Created')
+            new OA\Response(
+                response: 201,
+                description: 'OK',
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/Network'
+                )
+            ),
+            new OA\Response(response: 422, description: 'Validation error')
         ]
     )]
     public function store(StoreNetworkRequest $request, CreateNetworkUseCase $useCase): JsonResponse
@@ -88,8 +116,21 @@ class NetworkController extends Controller
                 schema: new OA\Schema(type: 'string')
             )
         ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                ref: '#/components/schemas/UpdateNetworkRequest'
+            )
+        ),
         responses: [
-            new OA\Response(response: 200, description: 'Updated'),
+            new OA\Response(
+                response: 200,
+                description: 'OK',
+                content: new OA\JsonContent(
+                    ref: '#/components/schemas/Network'
+                )
+            ),
+            new OA\Response(response: 422, description: 'Validation error'),
             new OA\Response(response: 404, description: 'Not found')
         ]
     )]
@@ -126,7 +167,9 @@ class NetworkController extends Controller
     )]
     public function destroy(string $id, DeleteNetworkUseCase $useCase): JsonResponse
     {
-        if (!$useCase->execute($id)) {
+        $deleted = $useCase->execute($id);
+
+        if (!$deleted) {
             return response()->json(['message' => 'Network not found'], 404);
         }
 
