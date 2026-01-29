@@ -25,6 +25,9 @@ class NetworkApiTest extends TestCase
         $response = $this->postJson('/api/networks', [
             'name' => 'Test Network',
             'description' => 'Test description',
+            'cidr' => '198.219.150.192/22',
+            'location' => 'Paris',
+            'status' => 'active',
         ]);
 
         $response
@@ -32,6 +35,9 @@ class NetworkApiTest extends TestCase
             ->assertJsonFragment([
                 'name' => 'Test Network',
                 'description' => 'Test description',
+                'cidr' => '198.219.150.192/22',
+                'location' => 'Paris',
+                'status' => 'active',
             ]);
 
         $this->assertDatabaseCount('networks', 1);
@@ -42,6 +48,9 @@ class NetworkApiTest extends TestCase
     {
         $response = $this->postJson('/api/networks', [
             'description' => 'No name',
+            'cidr' => '198.219.150.192/22',
+            'location' => 'London',
+            'status' => 'inactive',
         ]);
 
         $response
@@ -55,6 +64,9 @@ class NetworkApiTest extends TestCase
         $response = $this->postJson('/api/networks', [
             'name' => 'Network without description',
             'description' => null,
+            'cidr' => '198.219.150.192/22',
+            'location' => 'Toronto',
+            'status' => 'inactive',
         ]);
 
         $response
@@ -76,6 +88,10 @@ class NetworkApiTest extends TestCase
             ->assertJsonFragment([
                 'id' => $network->id,
                 'name' => $network->name,
+                'description' => $network->description,
+                'cidr' => $network->cidr,
+                'location' => $network->location,
+                'status' => $network->status,
             ]);
     }
 
@@ -95,6 +111,9 @@ class NetworkApiTest extends TestCase
         $response = $this->putJson("/api/networks/{$network->id}", [
             'name' => 'Updated name',
             'description' => null,
+            'cidr' => '198.219.150.192/22',
+            'location' => 'Toronto',
+            'status' => 'inactive',
         ]);
 
         $response
@@ -102,6 +121,9 @@ class NetworkApiTest extends TestCase
             ->assertJsonFragment([
                 'name' => 'Updated name',
                 'description' => null,
+                'cidr' => '198.219.150.192/22',
+                'location' => 'Toronto',
+                'status' => 'inactive',
             ]);
     }
 
